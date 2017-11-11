@@ -1,0 +1,275 @@
+---
+resource_types:
+  - name: google-cloud-storage
+    type: docker-image
+    source:
+      repository: frodenas/gcs-resource
+
+resources:
+  # - name: 1m
+  #   type: time
+  #   source: {interval: 1m}
+
+  - name: buildpacks-repo
+    type: google-cloud-storage
+    source:
+      bucket: {{repo}}
+      regexp: java-buildpack-offline-v(.*).zip
+      json_key: |
+                {
+                  "type": "service_account",
+                  "project_id": "fe-tkaburagi",
+                  "private_key_id": "36f2bff6408f87b21839b6be05fb1063fc1441fc",
+                  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC2orvxgiCxgvq3\np8jFDRJ52XSoPLR+XlUWYxGALarzz8Uf8qErHYpgOsXycOGhiAchv6hbirdqs71J\nNU0pt7i3PcQKyD0LQs+CMkEcPV1XU+T0IDCysHydSLrBfuF2Z5l45GpQJ3w8DXCO\nrj2JsYnanaNqVIWzdRkrCYcn6Mw9gZohCGT9SORkOyvBOAsZemNCuAU39HY5RXuU\nin+Vz8ZLhu0EKffQPFPwrE1xgnBpSvksVfnUCWypUZfMz099kl8makDhkaCZBpNE\nIx7rpPF7Sl621TnwYAf7AFTOixvIVVaiKuagIVEX9YqWS8hnKySLoCXMXYIrfJHj\nZCot4xoZAgMBAAECggEATPrfvAaM0DV0hweuHLyLTpfFT4oyy9boB2Ufgcb9+QFY\nxcQHgbxUUIZFXBCPUf4bf3KgvGEGOW/kN2DDkvNw5K+gm6jV7hKtk2OqRQRqfP4M\nEYgl7pNsGwGGUjuwPa+iJS4lz34tI8TIbiNsJccS43YxZIaWylLvlk/QS5aYy81I\nAKRD0pse2mOY2HLLgH9FJ2d656B26lemIz09oLMyCMw6nokrqXndB5svuSL5l2rC\nTOiSyV1W7GCZ0cQFkFk4bizLXsoOS8BEeNVmWlzzcvjGG4Dolr6OzJ6Up/RTptVe\n7M6JgAimig15jR1O/4lDUWUrBIirNJZEr7EzF1idxwKBgQDceIfK3puHDhJVyKVG\nfEk3gg5FFU7PxtNZVK7V96Hrx0PxmPrMQLnUpBW/+HeFnn2t/wE2f2FAMG1dDNti\ng4d6ATYJ3eXngtyTKZ6KRRhZ762QPrNExbhhKrVMhrnxMMZd0SD+zBE9Mld0S9pr\ng8qP2QuHnwOFb0AwchoFSnWPjwKBgQDUEVMBo4D26sEuflMltOVPhM7RSwbS6NeB\nlu+0Z+DE6zrm0bxD/QAEDlT0VFnT2zAuIZqyu7SVt10CuEyj4Ekec6Mauq99S22j\nEQZJVgakRTNqhYrjRQwbIMcObd6Ufpw41thZfRYQV0rN0X6N1fXOmWozk4FPwW0H\nFvXsXstn1wKBgBa824xhrvqbyepM+jatxMNTx3L6gplNMSjqYemxU2LEt04ob902\n47N5hMC6uGDwepfCT/a15mq/U9gf5lRfqk47573Ww8o/pc4Loc0y2RMVc/oHbWev\nWJe01uPglTa5yAuO8O82TqTYF0roM8uY2QBC6zx+etd9JMqaSfK3vi4jAoGAOYOR\nTYp4eX7lcaSVDE7pOg28wYpliWHYwK6cyAK8NOvPB7auJopBLNhuNe2ChzCU+o3m\nlL7PlSMruIcfUfqMGhQmkiM7YPHKBEWjvNP17StPbH5XUpfxVpInKkSl7wP/fnLW\nLj78cuYZxYQhnHoAtk1pPh+tHGJLHXcer0JuS/UCgYEA1DgikiQzLYRyICrK56C8\nYSZNQ2aB5YB6T6kgjcCn9gZfQ2a80tLq3lQsjOOsfcNA/wigyGmgeWFbDoHDQxUY\n7ABecPP9uT9mX86sMPPQu+3HYRgpxxojACmczz49gkPJ9ONVFIqVcbUCI8ngoV55\nkZ90tSajd41mTidS7DM9Eeo=\n-----END PRIVATE KEY-----\n",
+                  "client_email": "gcd-owner@fe-tkaburagi.iam.gserviceaccount.com",
+                  "client_id": "103706751692505011588",
+                  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                  "token_uri": "https://accounts.google.com/o/oauth2/token",
+                  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gcd-owner%40fe-tkaburagi.iam.gserviceaccount.com"
+                }
+
+  - name: app-repo
+    type: google-cloud-storage
+    source:
+      bucket: {{gcs-bucket-releases}}
+      regexp: pcfdemoapp-(.*).jar
+      json_key: |
+                {
+                  "type": "service_account",
+                  "project_id": "fe-tkaburagi",
+                  "private_key_id": "36f2bff6408f87b21839b6be05fb1063fc1441fc",
+                  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC2orvxgiCxgvq3\np8jFDRJ52XSoPLR+XlUWYxGALarzz8Uf8qErHYpgOsXycOGhiAchv6hbirdqs71J\nNU0pt7i3PcQKyD0LQs+CMkEcPV1XU+T0IDCysHydSLrBfuF2Z5l45GpQJ3w8DXCO\nrj2JsYnanaNqVIWzdRkrCYcn6Mw9gZohCGT9SORkOyvBOAsZemNCuAU39HY5RXuU\nin+Vz8ZLhu0EKffQPFPwrE1xgnBpSvksVfnUCWypUZfMz099kl8makDhkaCZBpNE\nIx7rpPF7Sl621TnwYAf7AFTOixvIVVaiKuagIVEX9YqWS8hnKySLoCXMXYIrfJHj\nZCot4xoZAgMBAAECggEATPrfvAaM0DV0hweuHLyLTpfFT4oyy9boB2Ufgcb9+QFY\nxcQHgbxUUIZFXBCPUf4bf3KgvGEGOW/kN2DDkvNw5K+gm6jV7hKtk2OqRQRqfP4M\nEYgl7pNsGwGGUjuwPa+iJS4lz34tI8TIbiNsJccS43YxZIaWylLvlk/QS5aYy81I\nAKRD0pse2mOY2HLLgH9FJ2d656B26lemIz09oLMyCMw6nokrqXndB5svuSL5l2rC\nTOiSyV1W7GCZ0cQFkFk4bizLXsoOS8BEeNVmWlzzcvjGG4Dolr6OzJ6Up/RTptVe\n7M6JgAimig15jR1O/4lDUWUrBIirNJZEr7EzF1idxwKBgQDceIfK3puHDhJVyKVG\nfEk3gg5FFU7PxtNZVK7V96Hrx0PxmPrMQLnUpBW/+HeFnn2t/wE2f2FAMG1dDNti\ng4d6ATYJ3eXngtyTKZ6KRRhZ762QPrNExbhhKrVMhrnxMMZd0SD+zBE9Mld0S9pr\ng8qP2QuHnwOFb0AwchoFSnWPjwKBgQDUEVMBo4D26sEuflMltOVPhM7RSwbS6NeB\nlu+0Z+DE6zrm0bxD/QAEDlT0VFnT2zAuIZqyu7SVt10CuEyj4Ekec6Mauq99S22j\nEQZJVgakRTNqhYrjRQwbIMcObd6Ufpw41thZfRYQV0rN0X6N1fXOmWozk4FPwW0H\nFvXsXstn1wKBgBa824xhrvqbyepM+jatxMNTx3L6gplNMSjqYemxU2LEt04ob902\n47N5hMC6uGDwepfCT/a15mq/U9gf5lRfqk47573Ww8o/pc4Loc0y2RMVc/oHbWev\nWJe01uPglTa5yAuO8O82TqTYF0roM8uY2QBC6zx+etd9JMqaSfK3vi4jAoGAOYOR\nTYp4eX7lcaSVDE7pOg28wYpliWHYwK6cyAK8NOvPB7auJopBLNhuNe2ChzCU+o3m\nlL7PlSMruIcfUfqMGhQmkiM7YPHKBEWjvNP17StPbH5XUpfxVpInKkSl7wP/fnLW\nLj78cuYZxYQhnHoAtk1pPh+tHGJLHXcer0JuS/UCgYEA1DgikiQzLYRyICrK56C8\nYSZNQ2aB5YB6T6kgjcCn9gZfQ2a80tLq3lQsjOOsfcNA/wigyGmgeWFbDoHDQxUY\n7ABecPP9uT9mX86sMPPQu+3HYRgpxxojACmczz49gkPJ9ONVFIqVcbUCI8ngoV55\nkZ90tSajd41mTidS7DM9Eeo=\n-----END PRIVATE KEY-----\n",
+                  "client_email": "gcd-owner@fe-tkaburagi.iam.gserviceaccount.com",
+                  "client_id": "103706751692505011588",
+                  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                  "token_uri": "https://accounts.google.com/o/oauth2/token",
+                  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gcd-owner%40fe-tkaburagi.iam.gserviceaccount.com"
+                }
+
+  - name: version-repo
+    type: google-cloud-storage
+    source:
+      bucket: {{ver-bucket}}
+      regexp: java-bp-v(.*).prop
+      json_key: |
+                {
+                  "type": "service_account",
+                  "project_id": "fe-tkaburagi",
+                  "private_key_id": "36f2bff6408f87b21839b6be05fb1063fc1441fc",
+                  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC2orvxgiCxgvq3\np8jFDRJ52XSoPLR+XlUWYxGALarzz8Uf8qErHYpgOsXycOGhiAchv6hbirdqs71J\nNU0pt7i3PcQKyD0LQs+CMkEcPV1XU+T0IDCysHydSLrBfuF2Z5l45GpQJ3w8DXCO\nrj2JsYnanaNqVIWzdRkrCYcn6Mw9gZohCGT9SORkOyvBOAsZemNCuAU39HY5RXuU\nin+Vz8ZLhu0EKffQPFPwrE1xgnBpSvksVfnUCWypUZfMz099kl8makDhkaCZBpNE\nIx7rpPF7Sl621TnwYAf7AFTOixvIVVaiKuagIVEX9YqWS8hnKySLoCXMXYIrfJHj\nZCot4xoZAgMBAAECggEATPrfvAaM0DV0hweuHLyLTpfFT4oyy9boB2Ufgcb9+QFY\nxcQHgbxUUIZFXBCPUf4bf3KgvGEGOW/kN2DDkvNw5K+gm6jV7hKtk2OqRQRqfP4M\nEYgl7pNsGwGGUjuwPa+iJS4lz34tI8TIbiNsJccS43YxZIaWylLvlk/QS5aYy81I\nAKRD0pse2mOY2HLLgH9FJ2d656B26lemIz09oLMyCMw6nokrqXndB5svuSL5l2rC\nTOiSyV1W7GCZ0cQFkFk4bizLXsoOS8BEeNVmWlzzcvjGG4Dolr6OzJ6Up/RTptVe\n7M6JgAimig15jR1O/4lDUWUrBIirNJZEr7EzF1idxwKBgQDceIfK3puHDhJVyKVG\nfEk3gg5FFU7PxtNZVK7V96Hrx0PxmPrMQLnUpBW/+HeFnn2t/wE2f2FAMG1dDNti\ng4d6ATYJ3eXngtyTKZ6KRRhZ762QPrNExbhhKrVMhrnxMMZd0SD+zBE9Mld0S9pr\ng8qP2QuHnwOFb0AwchoFSnWPjwKBgQDUEVMBo4D26sEuflMltOVPhM7RSwbS6NeB\nlu+0Z+DE6zrm0bxD/QAEDlT0VFnT2zAuIZqyu7SVt10CuEyj4Ekec6Mauq99S22j\nEQZJVgakRTNqhYrjRQwbIMcObd6Ufpw41thZfRYQV0rN0X6N1fXOmWozk4FPwW0H\nFvXsXstn1wKBgBa824xhrvqbyepM+jatxMNTx3L6gplNMSjqYemxU2LEt04ob902\n47N5hMC6uGDwepfCT/a15mq/U9gf5lRfqk47573Ww8o/pc4Loc0y2RMVc/oHbWev\nWJe01uPglTa5yAuO8O82TqTYF0roM8uY2QBC6zx+etd9JMqaSfK3vi4jAoGAOYOR\nTYp4eX7lcaSVDE7pOg28wYpliWHYwK6cyAK8NOvPB7auJopBLNhuNe2ChzCU+o3m\nlL7PlSMruIcfUfqMGhQmkiM7YPHKBEWjvNP17StPbH5XUpfxVpInKkSl7wP/fnLW\nLj78cuYZxYQhnHoAtk1pPh+tHGJLHXcer0JuS/UCgYEA1DgikiQzLYRyICrK56C8\nYSZNQ2aB5YB6T6kgjcCn9gZfQ2a80tLq3lQsjOOsfcNA/wigyGmgeWFbDoHDQxUY\n7ABecPP9uT9mX86sMPPQu+3HYRgpxxojACmczz49gkPJ9ONVFIqVcbUCI8ngoV55\nkZ90tSajd41mTidS7DM9Eeo=\n-----END PRIVATE KEY-----\n",
+                  "client_email": "gcd-owner@fe-tkaburagi.iam.gserviceaccount.com",
+                  "client_id": "103706751692505011588",
+                  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                  "token_uri": "https://accounts.google.com/o/oauth2/token",
+                  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gcd-owner%40fe-tkaburagi.iam.gserviceaccount.com"
+                }
+
+  - name: manifest-repo
+    type: git
+    source:
+      uri: {{github-uri}}
+      branch: {{github-branch}}
+
+  - name: cf-staging
+    type: cf
+    source:
+      api: {{cf-api}}
+      username: {{cf-username}}
+      password: {{cf-password}}
+      organization: {{cf-org}}
+      space: {{cf-space-staging}}
+      skip_cert_check: true
+
+  - name: cf-production
+    type: cf
+    source:
+      api: {{cf-api}}
+      username: {{cf-username}}
+      password: {{cf-password}}
+      organization: {{cf-org}}
+      space: {{cf-space-prod}}
+      skip_cert_check: true
+
+jobs: 
+  - name: sync-it-with-pivnet
+    plan:
+      # - get: 1m
+      #   trigger: true
+      - get: buildpacks-repo
+        trigger: true
+      - get: app-repo
+      - get: manifest-repo
+      - task: upload-to-PCF
+        config:
+            platform: linux
+            image_resource:
+              type: docker-image
+              source:
+                repository: governmentpaas/cf-cli
+            inputs:
+              - name: app-repo
+              - name: buildpacks-repo
+              - name: manifest-repo
+            outputs:
+              - name: buildpack
+              - name: app
+              - name: manifest
+            params: 
+              api: {{cf-api}}
+              user: {{cf-admin}}
+              pass: {{cf-admin-pass}}
+              org: {{cf-org}}
+              space: {{cf-space-prod}}
+            run:
+              path: sh
+              args:
+              - -c
+              - |
+                ls -ltr buildpacks-repo
+                ls -ltr app-repo
+                ls -ltr manifest-repo
+                tempname=`basename buildpacks-repo/java-*.zip`
+                echo ${tempname%.zip} 
+                bpname=`echo ${tempname%.zip}`
+                echo $bpname
+                echo $bpname | sed -e 's/[^0-9]//g'
+                version=`echo $bpname | sed -e 's/[^0-9]//g'` 
+
+                app=`basename app-repo/*.jar` 
+
+                bpname_f=java_buildpack_v$version
+
+                cf login -a $api -u $user -p $pass -o $org -s $space --skip-ssl-validation
+                cf create-buildpack $bpname_f buildpacks-repo/java-*.zip 1 --enable
+                cf buildpacks
+
+                str1="buildpack:"
+                str2="path:"
+
+                echo $bpname_f > manifest/java-bp-v$version.prop
+
+                echo $'  '$str1$' '$bpname_f >> manifest-repo/manifest-staging.yml
+                echo $'  '$str2$' '$app >> manifest-repo/manifest-staging.yml
+                cat manifest-repo/manifest-staging.yml
+
+                cp app-repo/$app manifest/$app
+                cp manifest-repo/manifest-staging.yml manifest/manifest-staging.yml
+
+                cat manifest/manifest-staging.yml
+                echo $bpname_f>latest_version
+
+                ls -ltr manifest
+      - put: cf-staging
+        params:
+          manifest: manifest/manifest-staging.yml
+      - put: version-repo
+        params:
+          file: manifest/java-bp-*.prop
+
+  - name: smoke-test
+    serial: true
+    plan:
+      - get: app-repo
+        passed: [ sync-it-with-pivnet ]
+      - get: manifest-repo
+        passed: [ sync-it-with-pivnet ]
+      - get: version-repo
+        trigger: true
+        passed: [ sync-it-with-pivnet ]
+      - task: smoke-test
+        config:
+            inputs:
+              - name: app-repo
+              - name: manifest-repo
+              - name: version-repo
+            outputs: 
+              - name: finaldir
+            platform: linux
+            image_resource:
+              type: docker-image
+              source:
+                repository: appropriate/curl
+            run:
+              path: sh
+              args:
+              - -c
+              - |
+                 i=0
+                 while [[ $i -ne 1 ]]; do
+                   code=`curl -LI http://pcfdemoapp-staging.apps.kabdev.xyz -o /dev/null -w '%{http_code}\n' -s`;
+                   if [[ ${code} = "200" ]]; then
+                       echo ${code};
+                     echo "ok";
+                   else
+                     echo "abort!!";
+                     exit 1
+                   fi
+                   i=`expr $i + 1`;
+                   sleep 1;
+                 done
+
+                 cat version-repo/java-bp.prop
+
+                 ls -ltr app-repo
+                 ls -ltr manifest-repo
+                 cat manifest-repo/manifest-production.yml
+
+                 cp app-repo/*.jar finaldir
+                 app=`basename finaldir/*jar`
+                 bp=`cat version-repo/*.prop`
+
+                 str1="buildpack:"
+                 str2='path:'
+
+                 echo $'  '$str2$' '$app >> manifest-repo/manifest-production.yml
+                 echo $'  '$str1$' '$bp >> manifest-repo/manifest-production.yml
+
+                 cp manifest-repo/manifest-production.yml finaldir/manifest-production.yml
+
+                 ls -ltr finaldir
+                 cat finaldir/manifest-production.yml
+
+      - put: cf-production
+        params:
+          manifest: finaldir/manifest-production.yml
+          current_app_name: pcfdemoapp
+  - name: roll-back
+    plan:
+      - get: app-repo
+      - get: version-repo
+      - task: roll-back
+        config:
+            platform: linux
+            image_resource:
+              type: docker-image
+              source:
+                repository: governmentpaas/cf-cli
+            inputs:
+              - name: app-repo
+              - name: version-repo
+            params: 
+              api: {{cf-api}}
+              user: {{cf-admin}}
+              pass: {{cf-admin-pass}}
+              org: {{cf-org}}
+              space_prod: {{cf-space-prod}}
+              space_stg: {{cf-space-staging}}
+            run:
+              path: sh
+              args:
+              - -c
+              - |
+                bp=`cat version-repo/*.prop`
+                cf login -a $api -u $user -p $pass -o $org -s $space_prod --skip-ssl-validation
+                cf delete-buildpack  $bp -f      
+                cf buildpacks
+                cf push pcfdemoapp -p app-repo/*jar -b java_buildpack_offline
+
+                cf login -a $api -u $user -p $pass -o $org -s $space_stg --skip-ssl-validation
+                cf push pcfdemoapp -p app-repo/*jar -b java_buildpack_offline
+
+
+
