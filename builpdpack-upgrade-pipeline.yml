@@ -163,7 +163,7 @@ jobs:
               - |
                  i=0
                  while [[ $i -ne 1 ]]; do
-                   code=`curl -LI http://pcfdemoapp-staging.pcflab.jp -o /dev/null -w '%{http_code}\n' -s`;
+                   code=`curl -LI http://pcfdemoapp-staging.apps.pcflab.jp -o /dev/null -w '%{http_code}\n' -s`;
                    if [[ ${code} = "200" ]]; then
                        echo ${code};
                      echo "ok";
@@ -233,7 +233,7 @@ jobs:
                 cf push pcfdemoapp -p app-repo/*jar -b java_buildpack_offline
 
                 cf login -a $api -u $user -p $pass -o $org -s $space_stg --skip-ssl-validation
-                cf push pcfdemoapp -p app-repo/*jar -b java_buildpack_offline
+                cf push pcfdemoapp -p app-repo/*jar -b java_buildpack_offline --hostname pcfdemoapp-staging
 
 
 
